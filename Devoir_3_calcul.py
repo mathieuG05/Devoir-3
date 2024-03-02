@@ -64,7 +64,7 @@ mu = 4.444
 T = 2*np.pi/mu
 x0 = 5.0
 v0 = 0.0
-N = 500
+N = 3700
 dt = 3*T / N
 
 # Initialisation des listes de données
@@ -113,4 +113,19 @@ plt.legend()
 plt.xlim(0, 3 * np.sqrt(2))  # Limite en x jusqu'à 3 * sqrt(2)
 plt.show()
 
-#E
+# Calcul des positions pour les deux méthodes
+positions_analytique = np.exp(-al * 3 * T) * (a * np.cos(mu * 3 * T) + b * np.sin(mu * 3 * T))
+positions_numerique = np.exp(-al * data_t[-1]) * (a * np.cos(mu * data_t[-1]) + b * np.sin(mu * data_t[-1]))
+
+# Calcul de la différence entre les deux positions à 3T
+difference = np.abs(positions_analytique - positions_numerique)
+
+# Calcul de la tolérance de 5%
+tolerance = 0.05 * positions_analytique
+
+# Vérification de la condition
+if difference < tolerance:
+    print("La différence entre les deux courbes à 3T est inférieure à 5%.")
+    print("La valeur de N pour laquelle cela se produit est :", N)
+else:
+    print("La différence entre les deux courbes à 3T est supérieure à 5%.")
